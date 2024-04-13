@@ -1,6 +1,6 @@
 --Procedure to insert a new member
 
-SET SERVEROUTPUT on;
+SET SERVEROUTPUT ON;
 
 CREATE OR REPLACE PROCEDURE InsertMember(
     p_FirstName IN VARCHAR2,
@@ -34,14 +34,7 @@ EXCEPTION
 END;
 /
 
-BEGIN
-    InsertMember('John', 'Doe', 'john.doe@iitbbs.ac.in','ef92b778bafe771e89245b89ecbc08a44a4e166c06659911881f383d4473e94f');
-END;
-/
-
-DELETE FROM Members
-WHERE MemberID = 101;
-
+EXEC InsertMember('John', 'Doe', 'john.doe@iitbbs.ac.in','ef92b778bafe771e89245b89ecbc08a44a4e166c06659911881f383d4473e94f');
 
 --Procedure to insert a new item
 
@@ -96,16 +89,8 @@ BEGIN
 END;
 /
 
-
-BEGIN
-    InsertItem('Robotic Arm', 'A versatile robotic arm for industrial applications', 'V1.0', 1500.00, 'Robotic Appliances', 'Y', 10);
-END;
-/
-
-BEGIN
-    InsertItem('Arduino Nano Board', 'An arduino board for tinyml', 'ATMega4809', 3100.00, 'Arduino Board', 'Y', 21);
-END;
-/
+EXEC InsertItem('Robotic Arm', 'A versatile robotic arm for industrial applications', 'V1.0', 1500.00, 'Robotic Appliances', 'Y', 10);
+EXEC InsertItem('Arduino Nano Board', 'An arduino board for tinyml', 'ATMega4809', 3100.00, 'Arduino Board', 'Y', 21);
 
 -- Procedure for governors to request to become admin
 CREATE OR REPLACE PROCEDURE req_for_admin(
@@ -143,7 +128,127 @@ EXCEPTION
 END;
 /
 
+EXEC req_for_admin(2);
+
+--Procedure for admin handling requests
+
+CREATE OR REPLACE PROCEDURE requesthandler(
+    p_RequestID IN INT,
+    p_Decision IN CHAR
+)
+IS
+    v_Accepted CHAR(1);
 BEGIN
-    req_for_admin(2);
+    -- Check if the requestID exists in adminreq table
+    SELECT accepted INTO v_Accepted
+    FROM adminreq
+    WHERE requestID = p_RequestID;
+    
+    IF p_Decision = 'A' THEN
+        UPDATE adminreq
+        SET accepted = 'Y'
+        WHERE requestID = p_RequestID;
+        DBMS_OUTPUT.PUT_LINE('Request accepted successfully');
+        
+    ELSIF p_Decision = 'R' AND v_Accepted = 'N' THEN
+        -- If reject and accepted was 'N', delete the row
+        DELETE FROM adminreq
+        WHERE requestID = p_RequestID;
+        DBMS_OUTPUT.PUT_LINE('Request rejected and removed from table');
+        
+    ELSIF p_Decision = 'D' AND v_Accepted = 'Y' THEN
+        -- If demote and accepted was 'Y' already, delete the row
+        DELETE FROM adminreq
+        WHERE requestID = p_RequestID;
+        DBMS_OUTPUT.PUT_LINE('Governor demoted and removed from table');
+        
+    ELSE
+        DBMS_OUTPUT.PUT_LINE('Invalid choice');
+    END IF;
+    
+    COMMIT;
+EXCEPTION
+    WHEN NO_DATA_FOUND THEN
+        RAISE_APPLICATION_ERROR(-20001, 'RequestID not found');
+    WHEN OTHERS THEN
+        ROLLBACK;
+        RAISE;
 END;
 /
+
+EXEC requestHandler(2,'A');
+EXEC requestHandler(9,'R');
+EXEC requestHandler(2,'D');
+
+--Calculate the fine
+
+CREATE OR REPLACE PROCEDURE fine_calculator(
+    p_TransactionID IN INT,
+    p_SupposedReturnDate IN DATE,
+    p_ActualReturnDate IN DATE,
+    p_FineCategory IN VARCHAR2
+)
+IS
+    v_ItemPrice NUMBER;
+    v_ItemID NUMBER;
+    v_Fine NUMBER := 0;
+    v_Delay NUMBER;
+    v_TransactionType VARCHAR2(20);
+BEGIN
+     -- Check if transaction type is 'return'
+    SELECT TransactionType INTO v_TransactionType
+    FROM Transactions
+    WHERE TransactionID = p_TransactionID;
+
+    IF v_TransactionType = 'return' THEN
+        RAISE_APPLICATION_ERROR(-20001, 'Fine cannot be applied to return transactions');
+    END IF;
+    
+    -- Get the ItemID from the Transactions table
+    SELECT ItemID INTO v_ItemID
+    FROM Transactions
+    WHERE TransactionID = p_TransactionID;
+    
+    -- Get the ItemPrice from the Items table
+    SELECT Price INTO v_ItemPrice
+    FROM Items
+    WHERE ItemID = v_ItemID;
+    
+    -- Calculate the delay in days
+    v_Delay := p_ActualReturnDate - p_SupposedReturnDate;
+    
+    -- Check if actual return date is earlier than supposed return date
+    IF v_Delay <= 0 THEN
+        v_Fine := 0;
+    -- Check if actual return date is later than supposed return date and fine category is delay
+    ELSIF p_FineCategory = 'delay' AND v_Delay < 20 THEN
+        v_Fine := v_Delay * v_ItemPrice * 0.05;
+    -- Check if actual return date is later than supposed return date and fine category is delay and delay is 20 days or more
+    ELSIF p_FineCategory = 'delay' AND v_Delay >= 20 THEN
+        v_Fine := v_ItemPrice;
+    -- Check if fine category is lost
+    ELSIF p_FineCategory = 'lost' THEN
+        v_Fine := v_ItemPrice;
+    ELSE
+        -- Invalid fine category
+        RAISE_APPLICATION_ERROR(-20001, 'Invalid fine category');
+    END IF;
+    
+    -- Insert the fine into the fine table
+    INSERT INTO Fine (TransactionID, SupposedReturnDate, ActualReturnDate, FineCategory, Fine)
+    VALUES (p_TransactionID, p_SupposedReturnDate, p_ActualReturnDate, p_FineCategory, v_Fine);
+    
+    -- Output the calculated fine
+    DBMS_OUTPUT.PUT_LINE('Fine for transaction ID ' || p_TransactionID || ': $' || v_Fine);
+EXCEPTION
+    WHEN NO_DATA_FOUND THEN
+        RAISE_APPLICATION_ERROR(-20002, 'Transaction ID not found');
+    WHEN OTHERS THEN
+        RAISE_APPLICATION_ERROR(-20003, 'An error occurred: ' || SQLERRM);
+END;
+/
+
+EXEC fine_calculator(p_TransactionID => 123, p_SupposedReturnDate => TO_DATE('2024-04-15', 'YYYY-MM-DD'), p_ActualReturnDate => TO_DATE('2024-04-20', 'YYYY-MM-DD'), p_FineCategory => 'delay');
+EXEC fine_calculator(p_TransactionID => 156, p_SupposedReturnDate => TO_DATE('2024-04-10', 'YYYY-MM-DD'), p_ActualReturnDate => NULL, p_FineCategory => 'lost');
+EXEC fine_calculator(p_TransactionID => 129, p_SupposedReturnDate => TO_DATE('2024-04-10', 'YYYY-MM-DD'), p_ActualReturnDate => NULL, p_FineCategory => 'lost');
+
