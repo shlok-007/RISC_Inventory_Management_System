@@ -3,6 +3,8 @@ import React from "react";
 import { Label } from "@/components/ui/label_at";
 import { Input } from "@/components/ui/input_at";
 import { cn } from "@/utils/cn";
+import { useToast } from "@/components/ui/use-toast"
+
 import {
   IconBrandGithub,
   IconBrandGoogle,
@@ -10,10 +12,35 @@ import {
 } from "@tabler/icons-react";
 
 export default function SignupForm() {
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    const { toast } = useToast();
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    console.log("Form submitted");
-  };
+    const response = await fetch("/api/signup", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+            fname: e.currentTarget.firstname.value,
+            lname: e.currentTarget.lastname.value,
+            email: e.currentTarget.email.value,
+            password: e.currentTarget.password.value
+        }),
+    });
+    const resMsg = await response.json();
+    if(resMsg.success){
+        console.log("Signed up successfully");
+    } else {
+        console.log("Failed to sign up");
+        toast({
+            variant: "destructive",
+            title: "Uh oh! We're unable to log you in.",
+            description: resMsg.message,
+        });
+    }
+
+};
+
   return (
     <div className="max-w-md w-full mx-auto rounded-none md:rounded-2xl p-4 md:p-8 shadow-input bg-white dark:bg-black">
       <h2 className="font-bold text-xl text-neutral-800 dark:text-neutral-200">
