@@ -26,7 +26,7 @@ export default function Home() {
         RISC Inventory
       </h1>
       <p className="text-center mt-2 text-neutral-300 relative z-20">
-        Framer motion is the best animation library ngl
+        RISC's Inventory Management System
       </p>
     </div>
   );

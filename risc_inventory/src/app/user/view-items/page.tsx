@@ -1,4 +1,6 @@
 import { HoverEffect } from "@/components/ui/card-hover-effect";
+// import { useAuth } from '../../../utils/authContext';
+// import { useRouter } from 'next/router';
 
 export default function ViewItems() {
   return (
