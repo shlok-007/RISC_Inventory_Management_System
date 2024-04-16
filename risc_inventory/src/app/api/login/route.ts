@@ -14,38 +14,28 @@ export async function POST(req: Request) {
         connection = await oracledb.getConnection(dbConfig);
         // console.log(connection);
         const result = await connection.execute(
-            `SELECT * FROM members WHERE email = :email AND password = :passHash`,
+            `SELECT firstname, lastname, email FROM members WHERE email = :email AND password = :passHash`,
             {
                 email: email as string,
                 passHash: { val: passHash as string },
             }
         );
-        
-        // const result = await connection.execute(
-        //     `SELECT * FROM members WHERE firstname = :fname`,
-        //     {
-        //         fname: fname as string
-        //     }
-        // )
+
         console.log(result);
-        // check for passHash out value
-        // if((result.outBinds as any).passHash === passHash){
-        //     console.log("Password hash matches");
-        // } else {
-        // console.log((result.outBinds as any).passHash);
-        if((result.rows as any).length > 0){
-            // const [userId, firstName, lastName, email, passwordHash, role] = result.rows[0];
-            // const responseData = {
-            //     firstName,
-            //     lastName,
-            //     email,
-            //     role
-            // };
-            return NextResponse.json({ success: true, message: result.rows[0] });
+        if ((result.rows as any[]).length > 0) {
+            console.log((result.rows as any[])[0][0]);
+
+            const fullName = `${(result.rows as any[])[0][0]} ${(result.rows as any[])[0][1]}`;
+            console.log(fullName, email);
+            return NextResponse.json({
+                success: true,
+                fullName,
+                email,
+            });
         } else {
-            console.log("Login failed")
+            console.log("Login failed");
             // return with error code 401
-            return NextResponse.json({ success: false, message: (result.outBinds as any).passHash});
+            return NextResponse.json({ success: false, message: (result.outBinds as any).passHash });
         }
 
     } catch (err) {

@@ -25,6 +25,7 @@ export default function SignupForm() {
     });
     const resMsg = await response.json();
     if(resMsg.success){
+        console.log(resMsg);
         console.log("Signed up successfully");
     } else {
         console.log("Failed to sign up");

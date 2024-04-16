@@ -13,23 +13,17 @@ export async function POST(req: Request) {
     try{
         connection = await oracledb.getConnection(dbConfig);
         // console.log(connection);
-        const result = await connection.execute(
-            `BEGIN
+        const insertQuery = `
+            BEGIN
                 InsertMember(:fname, :lname, :email, :passHash);
-             END;`,
-            {
-                fname: fname as string,
-                lname: lname as string,
-                email: email as string,
-                passHash: {val: passHash as string, dir: oracledb.BIND_INOUT},
-            }
-          );
-        // const result = await connection.execute(
-        //     `SELECT * FROM members WHERE firstname = :fname`,
-        //     {
-        //         fname: fname as string
-        //     }
-        // )
+            END;
+            `;
+        const result = await connection.execute(insertQuery, {
+            fname: { val: fname, type: oracledb.STRING },
+            lname: { val: lname, type: oracledb.STRING },
+            email: { val: email, type: oracledb.STRING },
+            passHash: { val: passHash, type: oracledb.STRING, dir: oracledb.BIND_INOUT },
+          });
         console.log(result);
         // check for passHash out value
         // if((result.outBinds as any).passHash === passHash){
@@ -37,7 +31,14 @@ export async function POST(req: Request) {
         // } else {
         console.log((result.outBinds as any).passHash);
         if((result.outBinds as any).passHash === "OKAY"){
-            return NextResponse.json({ success: true });
+            const fullName = `${fname} ${lname}`;
+            console.log(fullName, email);
+            return NextResponse.json({
+                success: true,
+                fullName,
+                email,
+            });
+    
         } else {
             console.log("Login failed")
             // return with error code 401

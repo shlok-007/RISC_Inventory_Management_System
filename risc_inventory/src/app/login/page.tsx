@@ -28,7 +28,7 @@ export default function SignupForm() {
     console.log(resMsg);
     if(resMsg.success){
         // revalidatePath('/posts') // Update cached posts
-        redirect('/user/view-items');
+        // redirect('/user/view-items');
         console.log("Logged in successfully");
     } else {
         console.log("Failed to sign up");
