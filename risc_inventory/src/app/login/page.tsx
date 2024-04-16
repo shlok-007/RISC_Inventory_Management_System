@@ -1,5 +1,5 @@
 "use client";
-import React from "react";
+import React, { useEffect } from "react";
 import { Label } from "@/components/ui/label_at";
 import { Input } from "@/components/ui/input_at";
 import { cn } from "@/utils/cn";
@@ -8,11 +8,14 @@ import { redirect } from 'next/navigation'
 import { revalidatePath } from 'next/cache'
 import { HoverBorderGradient } from "@/components/ui/hover-border-gradient";
 import Link from "next/link";
+// import { useEffect } from "react";
+// import { useRouter } from 'next/router';
 
 export default function SignupForm() {
     const { toast } = useToast();
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    
     const response = await fetch("/api/login", {
         method: "POST",
         headers: {
@@ -27,9 +30,12 @@ export default function SignupForm() {
     // const resMsg = {success: true, message: 'Login successful'};
     console.log(resMsg);
     if(resMsg.success){
-        // revalidatePath('/posts') // Update cached posts
-        // redirect('/user/view-items');
-        console.log("Logged in successfully");
+      
+      // Save user state in local storage
+      localStorage.setItem('userEmail', resMsg.email);
+      localStorage.setItem('userName', resMsg.fullName);
+      console.log("Logged in successfully");
+      window.location.href = '/user/view-items';
     } else {
         console.log("Failed to sign up");
         toast({

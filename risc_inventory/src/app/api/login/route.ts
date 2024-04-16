@@ -23,7 +23,7 @@ export async function POST(req: Request) {
 
         console.log(result);
         if ((result.rows as any[]).length > 0) {
-            console.log((result.rows as any[])[0][0]);
+            // console.log((result.rows as any[])[0][0]);
 
             const fullName = `${(result.rows as any[])[0][0]} ${(result.rows as any[])[0][1]}`;
             console.log(fullName, email);

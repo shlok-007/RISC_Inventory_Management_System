@@ -27,6 +27,9 @@ export default function SignupForm() {
     if(resMsg.success){
         console.log(resMsg);
         console.log("Signed up successfully");
+        localStorage.setItem('userEmail', resMsg.email);
+        localStorage.setItem('userName', resMsg.fullName);
+        window.location.href = '/user/view-items';
     } else {
         console.log("Failed to sign up");
         toast({
