@@ -1,3 +1,4 @@
+import {nextui} from '@nextui-org/theme';
 import type { Config } from "tailwindcss";
 const defaultTheme = require("tailwindcss/defaultTheme");
 const colors = require("tailwindcss/colors");
@@ -13,6 +14,8 @@ const config: Config = {
     './components/**/*.{ts,tsx}',
     './app/**/*.{ts,tsx}',
     './src/**/*.{ts,tsx}',
+    "./pages/**/*.{ts,tsx},\r\n    ./components/**/*.{ts,tsx},\r\n    ./app/**/*.{ts,tsx},\r\n    ./src/**/*.{ts,tsx},",
+    "./node_modules/@nextui-org/theme/dist/components/(card|ripple).js"
   ],
   prefix: "",
   theme: {
@@ -72,7 +75,7 @@ const config: Config = {
         },
         { values: flattenColorPalette(theme("backgroundColor")), type: "color" }
       );
-    },
+    },nextui()
   ],
 };
 

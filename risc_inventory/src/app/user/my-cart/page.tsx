@@ -1,11 +1,15 @@
+'use client';
 import { HoverEffect } from "@/components/ui/card-hover-effect";
-// import { useAuth } from '../../../utils/authContext';
-// import { useRouter } from 'next/router';
+import { useRouter } from 'next/router';
+import { useEffect } from "react";
+import {ReservationCard}  from "@/components/ui/reservation-card";
 
 export default function ViewItems() {
+
   return (
     <div className="max-w-5xl mx-auto px-8">
-      <HoverEffect items={projects} />
+      {/* <HoverEffect items={projects} /> */}
+      <ReservationCard items={projects} />
     </div>
   );
 }
