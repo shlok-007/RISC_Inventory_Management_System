@@ -59,7 +59,7 @@ export const columns3: ColumnDef<Members>[] = [
             >
               Copy payment ID
             </DropdownMenuItem> */}
-            {/* <DropdownMenuSeparator /> */}
+            <DropdownMenuSeparator />
             <DropdownMenuItem>Demote to User</DropdownMenuItem>
             {/* <DropdownMenuItem>View Reservations</DropdownMenuItem>
             <DropdownMenuItem>Impose Fines</DropdownMenuItem> */}

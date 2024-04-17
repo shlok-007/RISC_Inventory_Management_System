@@ -15,29 +15,34 @@ import {
 
 // This type is used to define the shape of our data.
 // You can use a Zod schema here if you want.
-export type Members = {
-  id: number
-  firstName: string
-  lastName: string
-  email: string
+export type Reservations = {
+  itemName: string
+  memberName: string
+  ReservationDate: string
+  ReturnDate: string
+  Purpose: string
 }
 
-export const columns4: ColumnDef<Members>[] = [
+export const columns5: ColumnDef<Reservations>[] = [
   {
-    accessorKey: "id",
-    header: "id",
+    accessorKey: "itemName",
+    header: "itemName",
   },
   {
-    accessorKey: "firstName",
-    header: "firstName",
+    accessorKey: "memberName",
+    header: "MemberName",
   },
   {
-    accessorKey: "lastName",
-    header: "lastName",
+    accessorKey: "ReservationDate",
+    header: "ReservationDate",
   },
   {
-    accessorKey: "email",
-    header: "Email",
+    accessorKey: "ReturnDate",
+    header: "ReturnDate",
+  },
+  {
+    accessorKey: "Purpose",
+    header: "Purpose",
   },
   {
     id: "actions",

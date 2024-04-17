@@ -40,7 +40,7 @@ interface DataTableProps<TData, TValue> {
   data: TData[]
 }
 
-export function DataTable3<TData, TValue>({
+export function DataTable5<TData, TValue>({
   columns,
   data,
 }: DataTableProps<TData, TValue>) {

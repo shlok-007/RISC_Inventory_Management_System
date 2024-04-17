@@ -381,8 +381,8 @@ BEGIN
     DBMS_OUTPUT.PUT_LINE(v_Purpose); -- Print the error message if any
 END;
 /
-
--- Procedure to decide whether to accept or reject a reservation.
+rocedure to decide whether to accept or reject a reservation.
+-- P
 CREATE OR REPLACE PROCEDURE res_decision(
     p_ReservationID IN INT,
     p_Decision IN OUT VARCHAR2 -- Changed to IN OUT parameter
