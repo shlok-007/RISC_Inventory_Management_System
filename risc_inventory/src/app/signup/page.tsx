@@ -8,7 +8,7 @@ import { HoverBorderGradient } from "@/components/ui/hover-border-gradient";
 import Link from "next/link";
 import { useRouter } from 'next/navigation';
 
-export default function SignupForm() {
+export default async function SignupForm() {
     const { toast } = useToast();
     const router = useRouter();
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
