@@ -4,8 +4,35 @@ import { Boxes } from "@/components/ui/background-boxes";
 import { HoverBorderGradient } from "@/components/ui/hover-border-gradient";
 import { cn } from "@/utils/cn";
 import Link from "next/link";
+import { TypewriterEffectSmooth } from "../components/ui/typewriter-effect";
 
 export default function Home() {
+
+  const words1 = [
+    {
+      text: "RISCventory",
+    },
+  ];
+
+  const words2= [
+    {
+      text: "RISC's",
+    },
+    {
+      text: "Inventory",
+    },
+    {
+      text: "management",
+    },
+    {
+      text: "system.",
+    },
+    // {
+    //   text: "Aceternity.",
+    //   className: "text-blue-500 dark:text-blue-500",
+    // },
+  ];
+
   return (
     <div className="h-screen relative w-full overflow-hidden bg-slate-900 flex flex-col items-center justify-center rounded-lg">
       <Link href="/signup">
@@ -22,12 +49,14 @@ export default function Home() {
       </Link>
       <div className="absolute inset-0 w-full h-full bg-slate-900 z-20 [mask-image:radial-gradient(transparent,white)] pointer-events-none" />
       <Boxes />
-      <h1 className={cn("md:text-4xl text-xl text-white relative z-20")}>
+      <h1 className={cn("md:text-5xl text-4xl text-white relative z-20")}>
         RISC Inventory
-      </h1>
-      <p className="text-center mt-2 text-neutral-300 relative z-20">
+       </h1>
+      {/*<TypewriterEffectSmooth words={words1} /> */}
+      <TypewriterEffectSmooth words={words2} />
+      {/* <p className="text-center mt-2 text-neutral-300 relative z-20">
         RISC's Inventory Management System
-      </p>
+      </p> */}
     </div>
   );
 }

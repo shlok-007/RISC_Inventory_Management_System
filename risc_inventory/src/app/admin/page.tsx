@@ -1,60 +1,98 @@
-"use client";
+// "use client";
 
 import Image from "next/image";
 import { Tabs } from "@/components/ui/tabs";
+// import DemoPage from "./members/page";
+import { Items, columns1 } from "./items/columns";
+import { DataTable1 } from "./items/data-table";
+import { Members, columns2 } from "./members/columns";
+import { DataTable2 } from "./members/data-table";
 
-export default function TabsDemo() {
+async function getData1(): Promise<Items[]> {
+  // Fetch data from your API here.
+  return [
+    {
+      id: 1,
+      Name: "Arduino Uno R3",
+      Version: "Rev3",
+      Price: 22.0,
+      Category: "Microcontroller",
+      Quantity: 50,
+      Consumability: "N",
+    },
+    // ...
+  ];
+}
+
+async function getData2(): Promise<Members[]> {
+  // Fetch data from your API here.
+  return [
+    {
+      id: 1,
+      firstName: "Sagnik",
+      lastName: "Basu",
+      email: "21cs02004@iitbbs.ac.in",
+    },
+    // ...
+  ];
+}
+
+export default async function TabsDemo() {
+  const data1 = await getData1();
+  const data2 = await getData2();
   const tabs = [
     {
-      title: "Product",
-      value: "product",
+      title: "Items",
+      value: "Items",
       content: (
         <div className="w-full overflow-hidden relative h-full rounded-2xl p-10 text-xl md:text-4xl font-bold text-white bg-gradient-to-br from-purple-700 to-violet-900">
-          <p>Product Tab</p>
-          <DummyContent />
+          <div className="container mx-auto py-10">
+            <DataTable1 columns={columns1} data={data1} />
+          </div>
         </div>
       ),
     },
     {
-      title: "Services",
-      value: "services",
+      title: "Members",
+      value: "Members",
       content: (
         <div className="w-full overflow-hidden relative h-full rounded-2xl p-10 text-xl md:text-4xl font-bold text-white bg-gradient-to-br from-purple-700 to-violet-900">
-          <p>Services tab</p>
-          <DummyContent />
+          <div className="container mx-auto py-10">
+            <DataTable2 columns={columns2} data={data2} />
+          </div>
         </div>
       ),
     },
     {
-      title: "Playground",
-      value: "playground",
+      title: "Governors",
+      value: "Governors",
       content: (
         <div className="w-full overflow-hidden relative h-full rounded-2xl p-10 text-xl md:text-4xl font-bold text-white bg-gradient-to-br from-purple-700 to-violet-900">
-          <p>Playground tab</p>
+          <p>Governors tab</p>
           <DummyContent />
         </div>
       ),
     },
-    {
-      title: "Content",
-      value: "content",
-      content: (
-        <div className="w-full overflow-hidden relative h-full rounded-2xl p-10 text-xl md:text-4xl font-bold text-white bg-gradient-to-br from-purple-700 to-violet-900">
-          <p>Content tab</p>
-          <DummyContent />
-        </div>
-      ),
-    },
-    {
-      title: "Random",
-      value: "random",
-      content: (
-        <div className="w-full overflow-hidden relative h-full rounded-2xl p-10 text-xl md:text-4xl font-bold text-white bg-gradient-to-br from-purple-700 to-violet-900">
-          <p>Random tab</p>
-          <DummyContent />
-        </div>
-      ),
-    },
+    // {
+    //   title: "Content",
+    //   value: "content",
+    //   content: (
+    //     <div className="w-full overflow-hidden relative h-full rounded-2xl p-10 text-xl md:text-4xl font-bold text-white bg-gradient-to-br from-purple-700 to-violet-900">
+    //       <p>Content tab</p>
+    //       <DummyContent />
+    //     </div>
+    //   ),
+    // },
+    // {
+    //   title: "Random",
+    //   value: "random",
+    //   content: (
+    //     <div className="w-full overflow-hidden relative h-full rounded-2xl p-10 text-xl md:text-4xl font-bold text-white bg-gradient-to-br from-purple-700 to-violet-900">
+    //       <p>Random tab</p>
+    //       <DummyContent />
+    //     </div>
+    //   ),
+    // },
   ];
 
   return (
