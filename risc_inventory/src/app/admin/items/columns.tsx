@@ -68,7 +68,7 @@ export const columns1: ColumnDef<Members>[] = [
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end">
-            <DropdownMenuLabel class="text-2xl font-bold text-black text-center">Actions</DropdownMenuLabel>
+            <DropdownMenuLabel class="text-l font-bold text-white text-center">Actions</DropdownMenuLabel>
             {/* <DropdownMenuItem
               onClick={() => navigator.clipboard.writeText(Members.id)}
             >

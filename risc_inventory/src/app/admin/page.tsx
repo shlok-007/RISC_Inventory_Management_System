@@ -7,6 +7,10 @@ import { Items, columns1 } from "./items/columns";
 import { DataTable1 } from "./items/data-table";
 import { Members, columns2 } from "./members/columns";
 import { DataTable2 } from "./members/data-table";
+import { Governors_pr, columns3 } from "./governors_pr/columns";
+import { DataTable3 } from "./governors_pr/data-table";
+import { Governors_new, columns4 } from "./governors_new/columns";
+import { DataTable4 } from "./governors_new/data-table";
 
 async function getData1(): Promise<Items[]> {
   // Fetch data from your API here.
@@ -37,9 +41,38 @@ async function getData2(): Promise<Members[]> {
   ];
 }
 
+async function getData3(): Promise<Governors_pr[]> {
+  // Fetch data from your API here.
+  return [
+    {
+      id: 1,
+      firstName: "Sagnik",
+      lastName: "Basu",
+      email: "21cs02004@iitbbs.ac.in",
+    },
+    // ...
+  ];
+}
+
+async function getData4(): Promise<Governors_new[]> {
+  // Fetch data from your API here.
+  return [
+    {
+      id: 1,
+      firstName: "Shlok Kr.",
+      lastName: "Shaw",
+      email: "21cs02008@iitbbs.ac.in",
+    },
+    // ...
+  ];
+}
+
+
 export default async function TabsDemo() {
   const data1 = await getData1();
   const data2 = await getData2();
+  const data3 = await getData3();
+  const data4 = await getData4();
   const tabs = [
     {
       title: "Items",
@@ -68,9 +101,16 @@ export default async function TabsDemo() {
       value: "Governors",
       content: (
         <div className="w-full overflow-hidden relative h-full rounded-2xl p-10 text-xl md:text-4xl font-bold text-white bg-gradient-to-br from-purple-700 to-violet-900">
-          <p>Governors tab</p>
-          <DummyContent />
+        <div className="container mx-auto py-10">
+          <div className="text-center text-4xl font-bold text-black">Existing governors</div>
+          <DataTable3 columns={columns3} data={data3} />
         </div>
+
+        <div className="container mx-auto py-10">
+          <div className="text-center text-4xl font-bold text-black">Requesting governors</div>
+          <DataTable4 columns={columns4} data={data4} />
+        </div>
+      </div>
       ),
     },
     // {
