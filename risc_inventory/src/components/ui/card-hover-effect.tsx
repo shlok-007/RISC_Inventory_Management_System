@@ -4,6 +4,7 @@ import { cn } from "@/utils/cn";
 import { AnimatePresence, motion } from "framer-motion";
 import { useState } from "react";
 import Image from "next/image";
+import { useToast } from "@/components/ui/use-toast"
 
 export const HoverEffect = ({
   items,
@@ -34,10 +35,9 @@ export const HoverEffect = ({
       )}
     >
       {items.map((item, idx) => (
-        <>
         <div
-          key={item.title + item.version + item.category + item.quantity}
-          className="relative group  block p-2 h-full w-full"
+          key={idx}
+          className="relative group  block p-2 h-full w-full cursor-pointer"
           onMouseEnter={() => setHoveredIndex(idx)}
           onMouseLeave={() => setHoveredIndex(null)}
           onClick={() => {
@@ -70,7 +70,6 @@ export const HoverEffect = ({
               category={item.category} />
           </Card>
         </div>
-        </>
       ))}
     </div>
     </>
@@ -141,8 +140,8 @@ export const CardImage = ({
       <Image
         src={src}
         alt={alt}
-        layout="fill"
-        objectFit="cover"
+        fill={true}
+        sizes="100%"
         className="rounded-2xl"
       />
     </div>
@@ -161,7 +160,6 @@ import {
   DrawerTitle,
   DrawerTrigger,
 } from "@/components/ui/drawer"
-import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 
 
@@ -185,17 +183,17 @@ export function ItemDetails(
   return (
       <Drawer open={open} onOpenChange={setOpen}>
         <DrawerContent>
-        <div className="mx-auto w-full max-w-sm">
+        <div className="w-full px-10 mx-auto">
           <DrawerHeader className="text-left">
             <DrawerTitle>{item.title}</DrawerTitle>
-            <DrawerDescription>
-              {item.description}
-            </DrawerDescription>
+            <DrawerDescription className="mt-2">Category: {item.category} | Version: {item.version}</DrawerDescription>
+            <DrawerDescription>Description: {item.description}</DrawerDescription>
+            <DrawerDescription>Available: {item.quantity}</DrawerDescription>
           </DrawerHeader>
-          <ReservationForm itemID={item.id} className="grid gap-4" />
+          <ReservationForm itemID={item.id} className="p-4" />
           <DrawerFooter className="pt-2">
             <DrawerClose asChild>
-              <Button variant="outline">Cancel</Button>
+              <Button className="w-2/5 min-w-3/5 mx-auto" variant="outline">Cancel</Button>
             </DrawerClose>
           </DrawerFooter>
         </div>
@@ -208,14 +206,57 @@ import { Textarea } from "@/components/ui/textarea"
  
 function ReservationForm({ className, itemID }: { className: string, itemID: number })
 {
+  const {toast} = useToast();
+  // const { itemid, memberid, reservationdate, returndate, purpose } = await req.json();
+  // get memberid from localStorage
+  const memberid = localStorage.getItem('memberId');
+  const [date, setDate] = React.useState<DateRange | undefined>({
+    from: new Date(),
+    to: addDays(new Date(), 20),
+  });
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const response = await fetch("/api/reserve", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+            itemid: itemID,
+            memberid: memberid,
+            reservationdate: date?.from,
+            returndate: date?.to,
+            purpose: e.currentTarget.purpose.value
+        }),
+    });
+    const resMsg = await response.json();
+    if(resMsg.success){
+        console.log(resMsg);
+        console.log("Reserved successfully");
+        toast({
+            title: "Reserved successfully",
+            description: "You have successfully reserved the item.",
+        });
+    } else {
+        console.log("Failed to reserve");
+        toast({
+            variant: "destructive",
+            title: "Uh oh! We're unable to reserve the item.",
+            description: resMsg.message,
+        });
+    }
+  };
+
   return (
-    <form className={cn("grid items-start gap-4", className)}>
-      <DatePickerWithRange />
-      <div className="grid w-full gap-1.5">
+    <form className={cn("grid items-start gap-4", className)} onSubmit={handleSubmit}>
+      <Label htmlFor="datepicker">Choose the duration of your reservation</Label>
+      <DatePickerWithRange date={date} setDate={setDate} />
+      <div className="grid w-full gap-2.5 pb-4">
         <Label htmlFor="purpose">Purpose</Label>
         <Textarea placeholder="Type your purpose here." id="purpose" />
       </div>
-      <Button type="submit">Reserve</Button>
+        <Button className="w-2/5 min-w-3/5 mx-auto" type="submit">Reserve</Button>
     </form>
   )
 }
@@ -232,12 +273,18 @@ import {
 } from "@/components/ui/popover"
 
 export function DatePickerWithRange({
-  className,
-}: React.HTMLAttributes<HTMLDivElement>) {
-  const [date, setDate] = React.useState<DateRange | undefined>({
-    from: new Date(2022, 0, 20),
-    to: addDays(new Date(2022, 0, 20), 20),
-  })
+  className, date, setDate
+}: {
+  className?: string;
+  date?: DateRange;
+  setDate: React.Dispatch<React.SetStateAction<DateRange | undefined>>;
+}
+
+) {
+  // const [date, setDate] = React.useState<DateRange | undefined>({
+  //   from: new Date(),
+  //   to: addDays(new Date(), 20),
+  // })
  
   return (
     <div className={cn("grid gap-2", className)}>

@@ -501,3 +501,20 @@ BEGIN
     DBMS_OUTPUT.PUT_LINE('Process completed successfully');
 END;
 /
+
+CREATE OR REPLACE VIEW ItemDetailView AS
+SELECT 
+    I.ItemID,
+    I.ItemName,
+    I.Version,
+    I.Price,
+    C.CategoryName,
+    Q.Quantity,
+    I.Consumability,
+    I.Images
+FROM 
+    Items I
+JOIN 
+    Categories C ON I.CategoryID = C.CategoryID
+JOIN 
+    Quantities Q ON I.ItemID = Q.ItemID;
