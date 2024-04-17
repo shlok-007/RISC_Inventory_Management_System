@@ -25,16 +25,42 @@ async function getData1(): Promise<Items[]> {
 }
 
 async function getData2(): Promise<Members[]> {
-  // Fetch data from your API here.
-  return [
-    {
-      id: 1,
-      firstName: "Sagnik",
-      lastName: "Basu",
-      email: "21cs02004@iitbbs.ac.in",
-    },
-    // ...
-  ];
+  try {
+      const response = await fetch("http://localhost:3000/api/members");
+
+      if (!response.ok) {
+          throw new Error('Failed to fetch data');
+      }
+
+      const data = await response.json();
+      
+      if (data.success) {
+          // console.log(data.results);
+          // Assuming data.result contains an array of member objects
+          // return [];
+          return data.results as Members[];
+      } else {
+          console.log("Failed to fetch data:", data.message);
+          // return []; // Return an empty array if data retrieval is unsuccessful
+          return [
+            {
+              id: 1,
+              firstName: "Sagnik",
+              lastName: "Basu",
+              email: "21cs02004@iitbbs.ac.in",
+            }];
+      }
+  } catch (error) {
+      console.error('Error fetching data:', error);
+      // return []; // Return an empty array if there's an error
+      return [
+        {
+          id: 1,
+          firstName: "Sagnik",
+          lastName: "Basu",
+          email: "21cs02004@iitbbs.ac.in",
+        }];
+  }
 }
 
 export default async function TabsDemo() {
