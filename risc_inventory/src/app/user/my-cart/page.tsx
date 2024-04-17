@@ -1,5 +1,5 @@
 import {Table,TableBody,TableCaption,TableCell,TableHead,TableHeader,TableRow, TableFooter} from "@/components/ui/table"
-
+import { Card, CardContent } from "@/components/ui/card";
 // import { useAuth } from '../../../utils/authContext';
 // import { useRouter } from 'next/router';
 const invoices = [
@@ -51,15 +51,16 @@ export default function ViewItems() {
 
   
   return (
-    <div>
-      <Table>
+    <Card>
+      <CardContent>
+      <Table className="mt-4">
         <TableCaption>A list of your recent invoices.</TableCaption>
         <TableHeader>
           <TableRow>
-            <TableHead className="w-[100px]">Item Name</TableHead>
-            <TableHead>Status</TableHead>
-            <TableHead>Reservation Date</TableHead>
-            <TableHead className="text-right">Return Date</TableHead>
+            <TableHead className="w-[200px]">Item Name</TableHead>
+            <TableHead className="w-[200px]">Status</TableHead>
+            <TableHead className="w-[200px]">Reservation Date</TableHead>
+            <TableHead className="text-right w-[200px]">Return Date</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
@@ -79,6 +80,7 @@ export default function ViewItems() {
           </TableRow>
         </TableFooter>
       </Table>
-    </div>
+      </CardContent>
+      </Card>
   );
 };

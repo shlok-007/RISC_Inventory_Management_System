@@ -7,7 +7,7 @@ export async function GET(req: NextRequest) {
     try{
         connection = await oracledb.getConnection(dbConfig);
         const result = await connection.execute(
-            `SELECT * FROM ItemDetailView`
+            `SELECT * FROM ItemDetailView where ItemID <= 18`
         );
         return NextResponse.json(result.rows);
     } catch (err) {
