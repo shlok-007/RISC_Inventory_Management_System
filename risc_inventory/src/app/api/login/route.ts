@@ -36,7 +36,7 @@ export async function POST(req: Request) {
         } else {
             console.log("Login failed");
             // return with error code 401
-            return NextResponse.json({ success: false, message: (result.outBinds as any).passHash });
+            return NextResponse.json({ success: false, message: "Invalid email or password"});
         }
 
     } catch (err) {
