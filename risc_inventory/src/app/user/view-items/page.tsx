@@ -4,13 +4,14 @@ import { HoverEffect } from "@/components/ui/card-hover-effect";
 
 export default function ViewItems() {
   return (
-    <div className="max-w-5xl mx-auto px-8">
+    <div className="max-w-5xl mx-auto px-8 mt-auto">
       <HoverEffect items={projects} />
     </div>
   );
 }
 export const projects = [
   {
+    id: 1,
     title: "Arduino Uno",
     image: "https://cdn.pixabay.com/photo/2016/03/27/18/54/technology-1283624_960_720.jpg",
     description:
@@ -20,8 +21,9 @@ export const projects = [
     quantity: 10,
   },
     {
+        id: 2,
         title: "Raspberry Pi",
-        image: "https://cdn.pixabay.com/photo/2017/08/06/11/18/raspberry-2595228_960_720.jpg",
+        image: "https://cdn.pixabay.com/photo/2016/03/27/18/54/technology-1283624_960_720.jpg",
         description:
         "The Raspberry Pi is a series of small single-board computers developed in the United Kingdom by the Raspberry Pi Foundation to promote teaching of basic computer science in schools and in developing countries.",
         version: "4",
@@ -29,8 +31,9 @@ export const projects = [
         quantity: 5,
     },
     {
+        id: 3,
         title: "ESP32",
-        image: "https://cdn.pixabay.com/photo/2019/12/05/19/52/esp32-4673838_960_720.jpg",
+        image: "https://cdn.pixabay.com/photo/2016/03/27/18/54/technology-1283624_960_720.jpg",
         description:
         "The ESP32 is a series of low-cost, low-power system on a chip microcontrollers with integrated Wi-Fi and dual-mode Bluetooth.",
         version: "1.0",
@@ -38,8 +41,9 @@ export const projects = [
         quantity: 15,
     },
     {
+        id: 4,
         title: "Nvidia Jetson Nano",
-        image: "https://cdn.pixabay.com/photo/2020/03/06/15/30/nvidia-4908710_960_720.jpg",
+        image: "https://cdn.pixabay.com/photo/2016/03/27/18/54/technology-1283624_960_720.jpg",
         description:
         "The Nvidia Jetson Nano Developer Kit is a small, powerful computer that lets you run multiple neural networks in parallel for applications like image classification, object detection, segmentation, and speech processing.",
         version: "2GB",
@@ -47,8 +51,9 @@ export const projects = [
         quantity: 3,
     },
     {
+        id: 5,
         title: "BeagleBone Black",
-        image: "https://cdn.pixabay.com/photo/2017/08/06/11/18/raspberry-2595228_960_720.jpg",
+        image: "https://cdn.pixabay.com/photo/2016/03/27/18/54/technology-1283624_960_720.jpg",
         description:
         "The BeagleBone Black is a low-cost, community-supported development platform for developers and hobbyists. Boot Linux in under 10 seconds and get started on development in less than 5 minutes with just a single USB cable.",
         version: "1.0",
@@ -56,6 +61,7 @@ export const projects = [
         quantity: 7,
     },
     {
+        id: 6,
         title: "STM32F4",
         image: "https://cdn.pixabay.com/photo/2016/03/27/18/54/technology-1283624_960_720.jpg",
         description:
