@@ -2,11 +2,7 @@
 
 import { cn } from "@/utils/cn";
 import { AnimatePresence, motion } from "framer-motion";
-import Link from "next/link";
 import { useState } from "react";
-
-import { BackgroundGradient } from "@/components/ui/background-gradient";
-import { IconAppWindow } from "@tabler/icons-react";
 import Image from "next/image";
 
 export const HoverEffect = ({
@@ -14,6 +10,7 @@ export const HoverEffect = ({
   className,
 }: {
   items: {
+    id: number;
     title: string;
     image: string;
     description: string;
@@ -24,8 +21,12 @@ export const HoverEffect = ({
   className?: string;
 }) => {
   let [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
+  const [open, setOpen] = React.useState(false);
+  const [currentItem, setCurrentItem] = React.useState(items[0]);
 
   return (
+    <>
+    <ItemDetails item={currentItem} open={open} setOpen={setOpen} />
     <div
       className={cn(
         "grid grid-cols-1 md:grid-cols-2  lg:grid-cols-3  py-10",
@@ -33,11 +34,16 @@ export const HoverEffect = ({
       )}
     >
       {items.map((item, idx) => (
+        <>
         <div
           key={item.title + item.version + item.category + item.quantity}
           className="relative group  block p-2 h-full w-full"
           onMouseEnter={() => setHoveredIndex(idx)}
           onMouseLeave={() => setHoveredIndex(null)}
+          onClick={() => {
+            setOpen(true);
+            setCurrentItem(item);
+          }}
         >
           <AnimatePresence>
             {hoveredIndex === idx && (
@@ -56,87 +62,221 @@ export const HoverEffect = ({
               />
             )}
           </AnimatePresence>
-          <Card {...item} />
+          <Card>
+            <CardTitle>{item.title}</CardTitle>
+            <CardImage src={item.image} alt={item.title} />
+            <CardVersionCategory
+              version={item.version}
+              category={item.category} />
+          </Card>
         </div>
+        </>
       ))}
     </div>
+    </>
   );
 };
-
-/*
-<div>
-      <BackgroundGradient className="rounded-[22px] max-w-sm p-4 sm:p-10 bg-white dark:bg-zinc-900">
-        <Image
-          src={`/jordans.webp`}
-          alt="jordans"
-          height="400"
-          width="400"
-          className="object-contain"
-        />
-        <p className="text-base sm:text-xl text-black mt-4 mb-2 dark:text-neutral-200">
-          Air Jordan 4 Retro Reimagined
-        </p>
- 
-        <p className="text-sm text-neutral-600 dark:text-neutral-400">
-          The Air Jordan 4 Retro Reimagined Bred will release on Saturday,
-          February 17, 2024. Your best opportunity to get these right now is by
-          entering raffles and waiting for the official releases.
-        </p>
-        <button className="rounded-full pl-4 pr-1 py-1 text-white flex items-center space-x-1 bg-black mt-4 text-xs font-bold dark:bg-zinc-800">
-          <span>Buy now </span>
-          <span className="bg-zinc-700 rounded-full text-[0.6rem] px-2 py-0 text-white">
-            $100
-          </span>
-        </button>
-      </BackgroundGradient>
-    </div>
-*/
 
 export const Card = ({
-  image,
-  title,
-  description,
-  version,
-  category,
-  quantity
+  className,
+  children,
 }: {
-  image: string;
-  title: string;
-  description: string;
-  version: string;
-  category: string;
-  quantity: number;
+  className?: string;
+  children: React.ReactNode;
 }) => {
   return (
-    <div>
-      <BackgroundGradient className="rounded-[22px] max-w-sm p-4 sm:p-10 bg-white dark:bg-zinc-900">
-        <Image
-          src={image}
-          alt="product image"
-          height="400"
-          width="400"
-          className="object-contain"
-        />
-        <p className="text-base sm:text-xl text-black mt-4 mb-2 dark:text-neutral-200">
-          {title}
-        </p>
-        <p className="text-sm text-neutral-600 dark:text-neutral-400">
-          {category}
-        </p>
-        <p className="text-sm text-neutral-600 dark:text-neutral-400">
-          {"Version: "+version}
-        </p>
-        
- 
-        {/* <p className="text-sm text-neutral-600 dark:text-neutral-400">
-          {description}
-        </p> */}
-        <button className="rounded-full px-4 py-2 text-white flex items-center space-x-1 bg-black mt-4 text-xs font-bold dark:bg-zinc-800">
-          <span>Reserve now </span>
-        </button>
-      </BackgroundGradient>
+    <div
+      className={cn(
+        "rounded-2xl h-full w-full p-4 overflow-hidden bg-black border border-transparent dark:border-white/[0.2] group-hover:border-slate-700 relative z-20",
+        className
+      )}
+    >
+      <div className="relative z-50">
+        <div className="px-4 py-1">{children}</div>
+      </div>
     </div>
   );
 };
 
+export const CardTitle = ({
+  className,
+  children,
+}: {
+  className?: string;
+  children: React.ReactNode;
+}) => {
+  return (
+    <h4 className={cn("text-zinc-100 font-bold tracking-wide my-2", className)}>
+      {children}
+    </h4>
+  );
+};
 
+export const CardVersionCategory = ({
+  version,
+  category,
+}: {
+  version: string;
+  category: string;
+}) => {
+  return (
+    <div className="flex-col items-center text-neutral-600 dark:text-neutral-400 mt-2">
+      <div>Version: {version}</div>
+      <div>Category: {category}</div>
+    </div>
+  );
+};
+
+export const CardImage = ({
+  src,
+  alt,
+  className,
+}: {
+  src: string;
+  alt: string;
+  className?: string;
+}) => {
+  return (
+    <div className={cn("relative h-40", className)}>
+      <Image
+        src={src}
+        alt={alt}
+        layout="fill"
+        objectFit="cover"
+        className="rounded-2xl"
+      />
+    </div>
+  );
+}
+
+import * as React from "react"
+import { Button } from "@/components/ui/button"
+import {
+  Drawer,
+  DrawerClose,
+  DrawerContent,
+  DrawerDescription,
+  DrawerFooter,
+  DrawerHeader,
+  DrawerTitle,
+  DrawerTrigger,
+} from "@/components/ui/drawer"
+import { Input } from "@/components/ui/input"
+import { Label } from "@/components/ui/label"
+
+
+// ItemDetails must show the title, image, description, version, category, and quantity of the item. The image should be on the right half of the drawer
+export function ItemDetails(
+  { item, open, setOpen }: {
+    item: {
+      id: number;
+      title: string;
+      image: string;
+      description: string;
+      version: string;
+      category: string;
+      quantity: number;
+    };
+    open: boolean;
+    setOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  }
+) {
+
+  return (
+      <Drawer open={open} onOpenChange={setOpen}>
+        <DrawerContent>
+        <div className="mx-auto w-full max-w-sm">
+          <DrawerHeader className="text-left">
+            <DrawerTitle>{item.title}</DrawerTitle>
+            <DrawerDescription>
+              {item.description}
+            </DrawerDescription>
+          </DrawerHeader>
+          <ReservationForm itemID={item.id} className="grid gap-4" />
+          <DrawerFooter className="pt-2">
+            <DrawerClose asChild>
+              <Button variant="outline">Cancel</Button>
+            </DrawerClose>
+          </DrawerFooter>
+        </div>
+        </DrawerContent>
+      </Drawer>
+  )
+}
+
+import { Textarea } from "@/components/ui/textarea"
+ 
+function ReservationForm({ className, itemID }: { className: string, itemID: number })
+{
+  return (
+    <form className={cn("grid items-start gap-4", className)}>
+      <DatePickerWithRange />
+      <div className="grid w-full gap-1.5">
+        <Label htmlFor="purpose">Purpose</Label>
+        <Textarea placeholder="Type your purpose here." id="purpose" />
+      </div>
+      <Button type="submit">Reserve</Button>
+    </form>
+  )
+}
+
+import { addDays, format } from "date-fns"
+import { Calendar as CalendarIcon } from "lucide-react"
+import { DateRange } from "react-day-picker"
+
+import { Calendar } from "@/components/ui/calendar"
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover"
+
+export function DatePickerWithRange({
+  className,
+}: React.HTMLAttributes<HTMLDivElement>) {
+  const [date, setDate] = React.useState<DateRange | undefined>({
+    from: new Date(2022, 0, 20),
+    to: addDays(new Date(2022, 0, 20), 20),
+  })
+ 
+  return (
+    <div className={cn("grid gap-2", className)}>
+      <Popover>
+        <PopoverTrigger asChild>
+          <Button
+            id="date"
+            variant={"outline"}
+            className={cn(
+              "w-[300px] justify-start text-left font-normal",
+              !date && "text-muted-foreground"
+            )}
+          >
+            <CalendarIcon className="mr-2 h-4 w-4" />
+            {date?.from ? (
+              date.to ? (
+                <>
+                  {format(date.from, "LLL dd, y")} -{" "}
+                  {format(date.to, "LLL dd, y")}
+                </>
+              ) : (
+                format(date.from, "LLL dd, y")
+              )
+            ) : (
+              <span>Pick a date</span>
+            )}
+          </Button>
+        </PopoverTrigger>
+        <PopoverContent className="w-auto p-0" align="start">
+          <Calendar
+            initialFocus
+            mode="range"
+            defaultMonth={date?.from}
+            selected={date}
+            onSelect={setDate}
+            numberOfMonths={2}
+          />
+        </PopoverContent>
+      </Popover>
+    </div>
+  )
+}

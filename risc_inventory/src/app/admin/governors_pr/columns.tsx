@@ -22,7 +22,7 @@ export type Members = {
   email: string
 }
 
-export const columns2: ColumnDef<Members>[] = [
+export const columns3: ColumnDef<Members>[] = [
   {
     accessorKey: "id",
     header: "id",
@@ -60,9 +60,9 @@ export const columns2: ColumnDef<Members>[] = [
               Copy payment ID
             </DropdownMenuItem> */}
             {/* <DropdownMenuSeparator /> */}
-            <DropdownMenuItem>Revoke Membership</DropdownMenuItem>
-            <DropdownMenuItem>View Reservations</DropdownMenuItem>
-            <DropdownMenuItem>Impose Fines</DropdownMenuItem>
+            <DropdownMenuItem>Demote to User</DropdownMenuItem>
+            {/* <DropdownMenuItem>View Reservations</DropdownMenuItem>
+            <DropdownMenuItem>Impose Fines</DropdownMenuItem> */}
           </DropdownMenuContent>
         </DropdownMenu>
       )
