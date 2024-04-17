@@ -14,7 +14,7 @@ export async function POST(req: Request) {
         connection = await oracledb.getConnection(dbConfig);
         // console.log(connection);
         const result = await connection.execute(
-            `SELECT firstname, lastname, email FROM members WHERE email = :email AND password = :passHash`,
+            `SELECT firstname, lastname, email, memberid FROM members WHERE email = :email AND password = :passHash`,
             {
                 email: email as string,
                 passHash: { val: passHash as string },
@@ -31,6 +31,7 @@ export async function POST(req: Request) {
                 success: true,
                 fullName,
                 email,
+                memberid: (result.rows as any[])[0][3],
             });
         } else {
             console.log("Login failed");

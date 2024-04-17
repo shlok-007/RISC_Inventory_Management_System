@@ -31,14 +31,22 @@ export async function POST(req: Request) {
         // } else {
         console.log((result.outBinds as any).passHash);
         if((result.outBinds as any).passHash === "OKAY"){
+            const result2 = await connection.execute(
+                `SELECT memberid FROM members WHERE email = :email`,
+                {
+                    email: email as string,
+                }
+            );
+            console.log((result2.rows as any[])[0][0]);
+    
             const fullName = `${fname} ${lname}`;
             console.log(fullName, email);
             return NextResponse.json({
                 success: true,
                 fullName,
                 email,
+                memberid: (result2.rows as any[])[0][0],
             });
-    
         } else {
             console.log("Login failed")
             // return with error code 401

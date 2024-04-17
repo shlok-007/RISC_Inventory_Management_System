@@ -6,9 +6,11 @@ import { cn } from "@/utils/cn";
 import { useToast } from "@/components/ui/use-toast"
 import { HoverBorderGradient } from "@/components/ui/hover-border-gradient";
 import Link from "next/link";
+import { useRouter } from 'next/navigation';
 
 export default function SignupForm() {
     const { toast } = useToast();
+    const router = useRouter();
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const response = await fetch("/api/signup", {
@@ -29,7 +31,8 @@ export default function SignupForm() {
         console.log("Signed up successfully");
         localStorage.setItem('userEmail', resMsg.email);
         localStorage.setItem('userName', resMsg.fullName);
-        window.location.href = '/user/view-items';
+        localStorage.setItem('memberId', resMsg.memberid);
+        router.push('/user/view-items');
     } else {
         console.log("Failed to sign up");
         toast({
