@@ -11,6 +11,8 @@ import { Governors_pr, columns3 } from "./governors_pr/columns";
 import { DataTable3 } from "./governors_pr/data-table";
 import { Governors_new, columns4 } from "./governors_new/columns";
 import { DataTable4 } from "./governors_new/data-table";
+import { Reservations, columns5} from "./Reserve/columns";
+import { DataTable5 } from "./Reserve/data-table";
 
 async function getData1(): Promise<Items[]> {
   // Fetch data from your API here.
@@ -93,19 +95,33 @@ async function getData4(): Promise<Governors_new[]> {
   ];
 }
 
+async function getData5(): Promise<Reservations[]> {
+  // Fetch data from your API here.
+  return [
+    {
+      itemName: "Arduino Uno R3",
+      memberName: "Lalit Mohanani",
+      ReservationDate: "17-04-2024",
+      ReturnDate: "24-04-2024",
+      Purpose:"To participate in general championship",
+    },
+    // ...
+  ];
+}
 
 export default async function TabsDemo() {
   const data1 = await getData1();
   const data2 = await getData2();
   const data3 = await getData3();
   const data4 = await getData4();
+  const data5 = await getData5();
   const tabs = [
     {
       title: "Items",
       value: "Items",
       content: (
-        <div className="w-full overflow-hidden relative h-full rounded-2xl p-10 text-xl md:text-4xl font-bold text-white bg-gradient-to-br from-purple-700 to-violet-900">
-          <div className="container mx-auto py-10">
+        <div className="w-full overflow-hidden relative h-full rounded-2xl p-3 text-xl md:text-4xl font-bold text-white bg-gradient-to-br from-purple-700 to-violet-900">
+          <div className="container mx-auto py-2">
             <DataTable1 columns={columns1} data={data1} />
           </div>
         </div>
@@ -115,8 +131,8 @@ export default async function TabsDemo() {
       title: "Members",
       value: "Members",
       content: (
-        <div className="w-full overflow-hidden relative h-full rounded-2xl p-10 text-xl md:text-4xl font-bold text-white bg-gradient-to-br from-purple-700 to-violet-900">
-          <div className="container mx-auto py-10">
+        <div className="w-full overflow-hidden relative h-full rounded-2xl p-3 text-xl md:text-4xl font-bold text-white bg-gradient-to-br from-purple-700 to-violet-900">
+          <div className="container mx-auto py-2">
             <DataTable2 columns={columns2} data={data2} />
           </div>
         </div>
@@ -126,30 +142,31 @@ export default async function TabsDemo() {
       title: "Governors",
       value: "Governors",
       content: (
-        <div className="w-full overflow-hidden relative h-full rounded-2xl p-10 text-xl md:text-4xl font-bold text-white bg-gradient-to-br from-purple-700 to-violet-900">
-        <div className="container mx-auto py-10">
+        <div className="w-full overflow-hidden relative h-full rounded-2xl p-3 text-xl md:text-4xl font-bold text-white bg-gradient-to-br from-purple-700 to-violet-900">
+        <div className="container mx-auto py-2">
           <div className="text-center text-4xl font-bold text-black">Existing governors</div>
           <DataTable3 columns={columns3} data={data3} />
         </div>
 
-        <div className="container mx-auto py-10">
+        <div className="container mx-auto py-2">
           <div className="text-center text-4xl font-bold text-black">Requesting governors</div>
           <DataTable4 columns={columns4} data={data4} />
         </div>
       </div>
       ),
     },
-    // {
-    //   title: "Content",
-    //   value: "content",
-    //   content: (
-    //     <div className="w-full overflow-hidden relative h-full rounded-2xl p-10 text-xl md:text-4xl font-bold text-white bg-gradient-to-br from-purple-700 to-violet-900">
-    //       <p>Content tab</p>
-    //       <DummyContent />
-    //     </div>
-    //   ),
-    // },
-    // {
+    {
+      title: "Reservation",
+      value: "Reservation",
+      content: (
+        <div className="w-full overflow-hidden relative h-full rounded-2xl p-3 text-xl md:text-4xl font-bold text-white bg-gradient-to-br from-purple-700 to-violet-900">
+          <div className="container mx-auto py-2">
+            <DataTable5 columns={columns5} data={data5} />
+          </div>
+        </div>
+      ),
+    },
+    
     //   title: "Random",
     //   value: "random",
     //   content: (
@@ -162,20 +179,10 @@ export default async function TabsDemo() {
   ];
 
   return (
-    <div className="h-[20rem] md:h-[40rem] [perspective:1000px] relative b flex flex-col max-w-5xl mx-auto w-full  items-start justify-start my-40">
+    <div className="h-[20rem] md:h-[45rem] [perspective:1000px] relative b flex flex-col max-w-5xl mx-auto w-full  items-start justify-start my-1000">
       <Tabs tabs={tabs} />
     </div>
   );
 }
 
-const DummyContent = () => {
-  return (
-    <Image
-      src="/linear.webp"
-      alt="dummy image"
-      width="1000"
-      height="1000"
-      className="object-cover object-left-top h-[60%]  md:h-[90%] absolute -bottom-10 inset-x-0 w-[90%] rounded-xl mx-auto"
-    />
-  );
-};
+
