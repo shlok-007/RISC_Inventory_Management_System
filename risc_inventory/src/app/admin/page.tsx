@@ -7,9 +7,9 @@ import { Items, columns1 } from "./items/columns";
 import { DataTable1 } from "./items/data-table";
 import { Members, columns2 } from "./members/columns";
 import { DataTable2 } from "./members/data-table";
-import { Governors_pr, columns3 } from "./governors_pr/columns";
+import {  columns3 } from "./governors_pr/columns";
 import { DataTable3 } from "./governors_pr/data-table";
-import { Governors_new, columns4 } from "./governors_new/columns";
+import {  columns4 } from "./governors_new/columns";
 import { DataTable4 } from "./governors_new/data-table";
 import { Reservations, columns5} from "./Reserve/columns";
 import { DataTable5 } from "./Reserve/data-table";
@@ -122,7 +122,7 @@ async function getData2(): Promise<Members[]> {
   }
 }
 
-async function getData3(): Promise<Governors_pr[]> {
+async function getData3(): Promise<Members[]> {
   // Fetch data from your API here.
   try {
       const response = await fetch("http://localhost:3000/api/members",{
@@ -170,17 +170,44 @@ async function getData3(): Promise<Governors_pr[]> {
   }
 }
 
-async function getData4(): Promise<Governors_new[]> {
+async function getData4(): Promise<Members[]> {
   // Fetch data from your API here.
-  return [
-    {
-      id: 1,
-      firstName: "Shlok Kr.",
-      lastName: "Shaw",
-      email: "21cs02008@iitbbs.ac.in",
-    },
-    // ...
-  ];
+  try {
+      const response = await fetch("http://localhost:3000/api/request");
+
+      if (!response.ok) {
+          throw new Error('Failed to fetch data');
+      }
+
+      const data = await response.json();
+      
+      if (data.success) {
+          // console.log(data.results);
+          // Assuming data.result contains an array of member objects
+          // return [];
+          return data.results as Members[];
+      } else {
+          console.log("Failed to fetch data:", data.message);
+          // return []; // Return an empty array if data retrieval is unsuccessful
+          return [
+            {
+              id: 1,
+              firstName: "Sagnik",
+              lastName: "Basu",
+              email: "21cs02004@iitbbs.ac.in",
+            }];
+      }
+  } catch (error) {
+      console.error('Error fetching data:', error);
+      // return []; // Return an empty array if there's an error
+      return [
+        {
+          id: 1,
+          firstName: "Sagnik",
+          lastName: "Basu",
+          email: "21cs02004@iitbbs.ac.in",
+        }];
+  }
 }
 
 async function getData5(): Promise<Reservations[]> {
