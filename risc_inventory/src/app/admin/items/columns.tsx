@@ -25,7 +25,7 @@ export type Items = {
   Consumability : string
 }
 
-export const columns1: ColumnDef<Members>[] = [
+export const columns1: ColumnDef<Items>[] = [
   {
     accessorKey: "id",
     header: "id",
@@ -68,7 +68,7 @@ export const columns1: ColumnDef<Members>[] = [
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end">
-            <DropdownMenuLabel class="text-l font-bold text-white text-center">Actions</DropdownMenuLabel>
+            <DropdownMenuLabel className="text-l font-bold text-white text-center">Actions</DropdownMenuLabel>
             {/* <DropdownMenuItem
               onClick={() => navigator.clipboard.writeText(Members.id)}
             >
