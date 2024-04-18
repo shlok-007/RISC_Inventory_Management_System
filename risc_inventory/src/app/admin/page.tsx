@@ -1,4 +1,4 @@
-// "use client";
+"use client";
 
 import Image from "next/image";
 import { Tabs } from "@/components/ui/tabs";
@@ -13,6 +13,7 @@ import {  columns4 } from "./governors_new/columns";
 import { DataTable4 } from "./governors_new/data-table";
 import { Reservations, columns5} from "./Reserve/columns";
 import { DataTable5 } from "./Reserve/data-table";
+import { useEffect, useState } from 'react';
 
 async function getData1(): Promise<Items[]> {
   // Fetch data from your API here.
@@ -36,7 +37,7 @@ async function getData1(): Promise<Items[]> {
               Version: item[3],
               Category: item[6],
               Quantity: item[5],
-              Consumability: "N",
+              Consumability: item[7],
             };
           });
           // console.log(formattedData);
@@ -274,12 +275,44 @@ async function getData5(): Promise<Reservations[]> {
   }
 }
 
-export default async function TabsDemo() {
-  const data1 = await getData1();
-  const data2 = await getData2();
-  const data3 = await getData3();
-  const data4 = await getData4();
-  const data5 = await getData5();
+export default function TabsDemo() {
+  const [data1, setData1] = useState<Items[]>([]);
+  const [data2, setData2] = useState<Members[]>([]);
+  const [data3, setData3] = useState<Members[]>([]);
+  const [data4, setData4] = useState<Members[]>([]);
+  const [data5, setData5] = useState<Reservations[]>([]);
+  const [dataFetched, setDataFetched] = useState(false);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const newData1: Items[] = await getData1();
+        // console.log(newData1);
+        setData1(newData1);
+
+        const newData2: Members[] = await getData2();
+        setData2(newData2);
+
+        const newData3: Members[] = await getData3();
+        setData3(newData3);
+
+        const newData4: Members[] = await getData4();
+        setData4(newData4);
+
+        const newData5: Reservations[] = await getData5();
+        setData5(newData5);
+
+        setDataFetched(true); // Set dataFetched to true after fetching data
+      } catch (error) {
+        console.error('Error fetching data:', error);
+        // Handle error if data fetching fails
+      }
+    };
+    if (!dataFetched) {
+      fetchData();
+    }
+  }, []); 
+  // console.log(data1);
   const tabs = [
     {
       title: "Items",
