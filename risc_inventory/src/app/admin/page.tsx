@@ -351,7 +351,7 @@ export default async function TabsDemo() {
   ];
 
   return (
-    <div className="h-[20rem] md:h-[45rem] [perspective:1000px] relative b flex flex-col max-w-5xl mx-auto w-full  items-start justify-start my-1000">
+    <div className="h-[20rem] md:h-[48rem] [perspective:1000px] relative b flex flex-col max-w-5xl mx-auto w-full  items-start justify-start my-1000">
       <Tabs tabs={tabs} />
     </div>
   );
