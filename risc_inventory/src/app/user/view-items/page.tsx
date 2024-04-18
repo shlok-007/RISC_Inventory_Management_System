@@ -26,6 +26,7 @@ export default function ViewItems() {
           quantity: item[5],
           category: item[6],
           image: item[4],
+          
         };
       });
       setItems(formattedData);
@@ -34,7 +35,7 @@ export default function ViewItems() {
   }, []);
 
   return (
-    <div className="max-w-5xl mx-auto px-8 mt-auto">
+    <div className="max-w-5xl mx-auto px-8 pt-6 mt-auto">
       <HoverEffect items={items} />
     </div>
   );

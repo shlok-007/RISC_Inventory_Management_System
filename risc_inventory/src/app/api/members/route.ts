@@ -2,14 +2,17 @@ import oracledb from 'oracledb';
 import dbConfig from '@/utils/dbConfig';
 import { NextResponse } from 'next/server';
 
-export async function GET(req: Request) {
+export async function POST(req: Request) {
     let connection;
+    const {role} = await req.json();
     // console.log(dbConfig);
     try{
         connection = await oracledb.getConnection(dbConfig);
         // console.log(connection);
-        const Query = `SELECT * FROM MEMBERS where role='User'`;
-        const result = await connection.execute(Query);
+        const Query = `SELECT * FROM MEMBERS where role=:role`;
+        const result = await connection.execute(Query,{
+            role: role
+        });
         // console.log(result);
  
         if((result.rows as any[]).length > 0){

@@ -16,23 +16,76 @@ import { DataTable5 } from "./Reserve/data-table";
 
 async function getData1(): Promise<Items[]> {
   // Fetch data from your API here.
-  return [
-    {
-      id: 1,
-      Name: "Arduino Uno R3",
-      Version: "Rev3",
-      Price: 22.0,
-      Category: "Microcontroller",
-      Quantity: 50,
-      Consumability: "N",
-    },
-    // ...
-  ];
+  try {
+      const response = await fetch("http://localhost:3000/api/view-items");
+
+      if (!response.ok) {
+          throw new Error('Failed to fetch data');
+      }
+
+      const data = await response.json();
+      
+      // console.log(data);
+      if (data) {
+          // Assuming data.result contains an array of member objects
+          // return [];
+          let formattedData = data.map((item: any) => {
+            return {
+              id: item[0],
+              Name: item[1],
+              Version: item[3],
+              Category: item[6],
+              Quantity: item[5],
+              Consumability: "N",
+            };
+          });
+          // console.log(formattedData);
+          return formattedData;
+      } else {
+          console.log("Failed to fetch data:");
+          // return []; // Return an empty array if data retrieval is unsuccessful
+          return [
+            {
+              id: 1,
+              Name: "Arduino Uno R3",
+              Version: "Rev3",
+              Price: 22.0,
+              Category: "Microcontroller",
+              Quantity: 50,
+              Consumability: "N",
+            },
+            // ...
+          ];
+      }
+  } catch (error) {
+      console.error('Error fetching data:', error);
+      // return []; // Return an empty array if there's an error
+      return [
+        {
+          id: 1,
+          Name: "Arduino Uno R3",
+          Version: "Rev3",
+          Price: 22.0,
+          Category: "Microcontroller",
+          Quantity: 50,
+          Consumability: "N",
+        },
+        // ...
+      ];
+  }
 }
 
 async function getData2(): Promise<Members[]> {
   try {
-      const response = await fetch("http://localhost:3000/api/members");
+      const response = await fetch("http://localhost:3000/api/members",{
+          method: "POST",
+          headers: {
+              "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+              role: "User",
+          }),
+      });
 
       if (!response.ok) {
           throw new Error('Failed to fetch data');
@@ -72,7 +125,15 @@ async function getData2(): Promise<Members[]> {
 async function getData3(): Promise<Governors_pr[]> {
   // Fetch data from your API here.
   try {
-      const response = await fetch("http://localhost:3000/api/members");
+      const response = await fetch("http://localhost:3000/api/members",{
+          method: "POST",
+          headers: {
+              "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+              role: "Governor",
+          }),
+      });
 
       if (!response.ok) {
           throw new Error('Failed to fetch data');
@@ -124,16 +185,66 @@ async function getData4(): Promise<Governors_new[]> {
 
 async function getData5(): Promise<Reservations[]> {
   // Fetch data from your API here.
-  return [
-    {
-      itemName: "Arduino Uno R3",
-      memberName: "Lalit Mohanani",
-      ReservationDate: "17-04-2024",
-      ReturnDate: "24-04-2024",
-      Purpose:"To participate in general championship",
-    },
-    // ...
-  ];
+  try {
+      const response = await fetch("http://localhost:3000/api/reservations",{
+          method: "POST",
+          headers: {
+              "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+              memberId: "All",
+          }),
+      });
+
+      if (!response.ok) {
+          throw new Error('Failed to fetch data');
+      }
+
+      const data = await response.json();
+      
+      if (data.success) {
+          // console.log(data.results);
+          // Assuming data.result contains an array of member objects
+          // return [];
+          let formattedData = data.results.map((item: any) => {
+            return {
+              itemName: item.ItemName,
+              memberName: item.Name,
+              ReservationDate: item.ReservationDate.split("T")[0],
+              ReturnDate:  item.ReturnDate.split("T")[0],
+              Purpose: item.Purpose,
+            };
+          });
+          // console.log(formattedData);
+          return formattedData;
+      } else {
+          console.log("Failed to fetch data:", data.message);
+          // return []; // Return an empty array if data retrieval is unsuccessful
+          return [
+            {
+              itemName: "Arduino Uno R3",
+              memberName: "Lalit Mohanani",
+              ReservationDate: "17-04-2024",
+              ReturnDate: "24-04-2024",
+              Purpose:"To participate in general championship",
+            },
+            // ...
+          ];
+      }
+  } catch (error) {
+      console.error('Error fetching data:', error);
+      // return []; // Return an empty array if there's an error
+      return [
+        {
+          itemName: "Arduino Uno R3",
+          memberName: "Lalit Mohanani",
+          ReservationDate: "17-04-2024",
+          ReturnDate: "24-04-2024",
+          Purpose:"To participate in general championship",
+        },
+        // ...
+      ];
+  }
 }
 
 export default async function TabsDemo() {
