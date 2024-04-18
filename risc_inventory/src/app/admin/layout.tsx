@@ -1,6 +1,7 @@
 'use client';
 import React, { useEffect } from "react";
 import { useRouter } from 'next/navigation';
+import { useUserContext } from "@/context";
 
 export default function UserLayout({
   children,
@@ -8,14 +9,14 @@ export default function UserLayout({
   children: React.ReactNode;
 }>) {
   const router = useRouter();
-
+  const { setUser } = useUserContext();
   useEffect(() => {
-    const email = localStorage.getItem("userEmail");
-    const memberId = localStorage.getItem("memberId");
-    const userName = localStorage.getItem("userName");
+    const userData = JSON.parse(localStorage.getItem("userData") || "");
 
-    if (!email || !memberId || !userName ) {
+    if (userData === null || userData.role === "User") {
       router.push('/login');  // Use router.push for client-side redirect
+    } else {
+      setUser(userData);
     }
   }, []);
   return (

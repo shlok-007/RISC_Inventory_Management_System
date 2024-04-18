@@ -4,6 +4,8 @@ import "./globals.css";
 import { Toaster } from "@/components/ui/toaster";
 import Image from "next/image";
 
+import { UserContextWrapper } from "@/context";
+
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
@@ -20,7 +22,9 @@ export default function RootLayout({
     <html lang="en">
       <body className={inter.className}>
         <Image src="/icon.png" alt="logo" width={48} height={48} className="fixed top-4 left-4 z-50" />
-        {children}
+        <UserContextWrapper>
+          {children}
+        </UserContextWrapper>
         <Toaster />
       </body>
     </html>

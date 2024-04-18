@@ -12,6 +12,8 @@ import {
 } from "@/components/ui/table";
 import { Card, CardContent } from "@/components/ui/card";
 
+import { useUserContext } from "@/context";
+
 export default function ViewItems() {
   const [items, setItems] = useState<
     {
@@ -21,7 +23,10 @@ export default function ViewItems() {
       ReturnDate: string;
     }[]
   >([]);
-  const memberId = localStorage.getItem("memberId");
+  // const memberId = useUserContext().user?.memberId;
+  const {user} = useUserContext();
+  const memberId = user?.memberId;
+  console.log("memberID: ", memberId);
   useEffect(() => {
     fetch("/api/reservations", {
       method: "POST",
@@ -46,9 +51,9 @@ export default function ViewItems() {
             <h1 className="text-white font-bold text-4xl">My Profile</h1>
           </div>
           <div className="text-right text-white">
-            <p>Name: John Doe</p>
-            <p>Role: Admin</p>
-            <p>Email: john.doe@example.com</p>
+            <p>Name: {user ? user.firstName + " " + user.lastName : ""}</p>
+            <p>Role: {user?.role}</p>
+            <p>Email: {user?.email}</p>
           </div>
         </div>
       </div>

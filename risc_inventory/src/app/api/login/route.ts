@@ -8,31 +8,41 @@ export async function POST(req: Request) {
     const hash = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(password));
     const passHash = Array.from(new Uint8Array(hash)).map(b => b.toString(16).padStart(2, '0')).join('');
     let connection;
-    console.log(email, passHash);
+    // console.log(email, passHash);
     // console.log(dbConfig);
     try{
         connection = await oracledb.getConnection(dbConfig);
         // console.log(connection);
         const result = await connection.execute(
-            `SELECT firstname, lastname, email, memberid FROM members WHERE email = :email AND password = :passHash`,
+            `SELECT * FROM members WHERE email = :email AND password = :passHash`,
             {
                 email: email as string,
                 passHash: { val: passHash as string },
             }
         );
 
-        console.log(result);
+        // console.log(result);
         if ((result.rows as any[]).length > 0) {
-            // console.log((result.rows as any[])[0][0]);
+            // console.log("\n\n"+"Fetched data: "+(result.rows as any[])[0]+"\n\n");
 
-            const fullName = `${(result.rows as any[])[0][0]} ${(result.rows as any[])[0][1]}`;
-            console.log(fullName, email);
-            return NextResponse.json({
+            // console.log({
+            //     memberId: (result.rows as any[])[0][0],
+            //     firstName: (result.rows as any[])[0][1],
+            //     lastName: (result.rows as any[])[0][2],
+            //     email: email,
+            //     role: (result.rows as any[])[0][5]
+            // })
+            const response = NextResponse.json({
                 success: true,
-                fullName,
-                email,
-                memberid: (result.rows as any[])[0][3],
+                userData: {
+                    memberId: (result.rows as any[])[0][0],
+                    firstName: (result.rows as any[])[0][1],
+                    lastName: (result.rows as any[])[0][2],
+                    email: email,
+                    role: (result.rows as any[])[0][5]
+                }
             });
+            return response;
         } else {
             console.log("Login failed");
             // return with error code 401

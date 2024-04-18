@@ -203,13 +203,15 @@ export function ItemDetails(
 }
 
 import { Textarea } from "@/components/ui/textarea"
+import { useUserContext } from "@/context";
  
 function ReservationForm({ className, itemID }: { className: string, itemID: number })
 {
   const {toast} = useToast();
   // const { itemid, memberid, reservationdate, returndate, purpose } = await req.json();
   // get memberid from localStorage
-  const memberid = localStorage.getItem('memberId');
+  // const memberid = localStorage.getItem('memberId');
+  const memberId = useUserContext().user?.memberId;
   const [date, setDate] = React.useState<DateRange | undefined>({
     from: new Date(),
     to: addDays(new Date(), 20),
@@ -224,7 +226,7 @@ function ReservationForm({ className, itemID }: { className: string, itemID: num
         },
         body: JSON.stringify({
             itemid: itemID,
-            memberid: memberid,
+            memberid: memberId,
             reservationdate: date?.from,
             returndate: date?.to,
             purpose: e.currentTarget.purpose.value

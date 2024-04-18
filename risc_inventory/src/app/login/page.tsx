@@ -34,9 +34,7 @@ export default function SignupForm() {
     if(resMsg.success){
       
       // Save user state in local storage
-      localStorage.setItem('userEmail', resMsg.email);
-      localStorage.setItem('userName', resMsg.fullName);
-      localStorage.setItem('memberId', resMsg.memberid);
+      localStorage.setItem('userData', JSON.stringify(resMsg.userData));
       console.log("Logged in successfully");
       router.push('/user/view-items');
     } else {

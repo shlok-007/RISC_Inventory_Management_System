@@ -8,6 +8,7 @@ import {
   Bot as ItemsIcon
  } from "lucide-react";
 import Link from "next/link";
+import { useUserContext } from "@/context";
 
 export default function UserLayout({
   children,
@@ -16,13 +17,15 @@ export default function UserLayout({
 }>) {
   const router = useRouter();
 
-  useEffect(() => {
-    const email = localStorage.getItem("userEmail");
-    const memberId = localStorage.getItem("memberId");
-    const userName = localStorage.getItem("userName");
+  const { setUser } = useUserContext();
 
-    if (!email || !memberId || !userName ) {
+  useEffect(() => {
+    const userData = localStorage.getItem("userData");
+
+    if (userData === null) {
       router.push('/login');  // Use router.push for client-side redirect
+    } else {
+      setUser(JSON.parse(userData));
     }
   }, []);
   return (
