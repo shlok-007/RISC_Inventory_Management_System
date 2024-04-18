@@ -43,10 +43,18 @@ export async function POST(req: Request) {
             console.log(fullName, email);
             return NextResponse.json({
                 success: true,
-                fullName,
-                email,
-                memberid: (result2.rows as any[])[0][0],
+                // fullName,
+                // email,
+                // memberid: (result2.rows as any[])[0][0],
+                userData: {
+                    memberId: (result2.rows as any[])[0][0],
+                    firstName: fname,
+                    lastName: lname,
+                    email,
+                    role: "User"
+                }
             });
+            
         } else {
             console.log("Login failed")
             // return with error code 401

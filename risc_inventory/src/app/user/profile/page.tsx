@@ -12,7 +12,10 @@ import {
 } from "@/components/ui/table";
 import { Card, CardContent } from "@/components/ui/card";
 
+import { Button } from "@/components/ui/button";
+
 import { useUserContext } from "@/context";
+import { useRouter } from "next/navigation";
 
 export default function ViewItems() {
   const [items, setItems] = useState<
@@ -23,8 +26,9 @@ export default function ViewItems() {
       ReturnDate: string;
     }[]
   >([]);
+  const router = useRouter();
   // const memberId = useUserContext().user?.memberId;
-  const {user} = useUserContext();
+  const {user, setUser} = useUserContext();
   const memberId = user?.memberId;
   console.log("memberID: ", memberId);
   useEffect(() => {
@@ -54,6 +58,13 @@ export default function ViewItems() {
             <p>Name: {user ? user.firstName + " " + user.lastName : ""}</p>
             <p>Role: {user?.role}</p>
             <p>Email: {user?.email}</p>
+            <Button className="mt-4" variant="destructive" 
+            onClick={()=>{
+              setUser(undefined);
+              localStorage.removeItem("userData");
+              router.push("/");
+            }}
+            >Logout</Button>
           </div>
         </div>
       </div>
@@ -85,8 +96,12 @@ export default function ViewItems() {
           </Table>
         </CardContent>
       </Card>
-      <button className="mt-4 ml-72 inline-flex h-12 animate-shimmer items-center justify-center rounded-md border border-slate-800 bg-[linear-gradient(110deg,#000103,45%,#1e2631,55%,#000103)] bg-[length:200%_100%] px-6 font-medium text-slate-400 transition-colors focus:outline-none focus:ring-2 focus:ring-slate-400 focus:ring-offset-2 focus:ring-offset-slate-50">
-        Request Admin Privilege{" "}
+      <button className="mt-4 ml-72 inline-flex h-12 animate-shimmer items-center justify-center rounded-md border border-slate-800 bg-[linear-gradient(110deg,#000103,45%,#1e2631,55%,#000103)] bg-[length:200%_100%] px-6 font-medium text-slate-400 transition-colors focus:outline-none focus:ring-2 focus:ring-slate-400 focus:ring-offset-2 focus:ring-offset-slate-50" 
+      onClick={() => {
+        router.push("/admin");}
+      }
+      >
+        Go to Admin Page{" "}
       </button>
     </div>
   );

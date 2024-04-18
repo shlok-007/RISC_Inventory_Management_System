@@ -27,12 +27,10 @@ export default function SignupForm() {
     });
     const resMsg = await response.json();
     if(resMsg.success){
-        console.log(resMsg);
-        console.log("Signed up successfully");
-        localStorage.setItem('userEmail', resMsg.email);
-        localStorage.setItem('userName', resMsg.fullName);
-        localStorage.setItem('memberId', resMsg.memberid);
-        router.push('/user/view-items');
+      console.log(resMsg.userData);
+      localStorage.setItem('userData', JSON.stringify(resMsg.userData));
+      console.log("Logged in successfully");
+      router.push('/user/view-items');
     } else {
         console.log("Failed to sign up");
         toast({
@@ -45,7 +43,7 @@ export default function SignupForm() {
 };
 
   return (
-    <div className="max-w-md w-full mx-auto rounded-none md:rounded-2xl p-4 md:p-8 shadow-input bg-white dark:bg-black">
+    <div className="max-w-md w-full mx-auto rounded-none md:rounded-2xl p-4 md:p-8 shadow-input bg-white dark:bg-black mt-36">
       <h2 className="font-bold text-xl text-neutral-800 dark:text-neutral-200">
         Welcome to RISC's Inventory
       </h2>

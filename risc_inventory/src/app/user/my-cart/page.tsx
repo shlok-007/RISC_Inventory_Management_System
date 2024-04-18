@@ -2,6 +2,7 @@
 import { useEffect, useState } from 'react';
 import { Table, TableBody, TableCaption, TableCell, TableHead, TableRow, TableFooter, TableHeader } from "@/components/ui/table";
 import { Card, CardContent } from "@/components/ui/card";
+import { useUserContext } from "@/context";
 
 export default function ViewItems() {
   // console.log(memberId);
@@ -11,7 +12,7 @@ export default function ViewItems() {
     ReservationDate: string;
     ReturnDate: string;
   }[]>([]);
-  const memberId = localStorage.getItem('memberId');
+  const memberId = useUserContext().user?.memberId;
   useEffect(() => {
       fetch("/api/reservations",{
             method: "POST",

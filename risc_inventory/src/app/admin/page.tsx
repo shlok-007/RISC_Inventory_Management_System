@@ -18,7 +18,7 @@ import { useEffect, useState } from 'react';
 async function getData1(): Promise<Items[]> {
   // Fetch data from your API here.
   try {
-      const response = await fetch("http://localhost:3000/api/view-items");
+      const response = await fetch("/api/view-items");
 
       if (!response.ok) {
           throw new Error('Failed to fetch data');
@@ -78,7 +78,7 @@ async function getData1(): Promise<Items[]> {
 
 async function getData2(): Promise<Members[]> {
   try {
-      const response = await fetch("http://localhost:3000/api/members",{
+      const response = await fetch("/api/members",{
           method: "POST",
           headers: {
               "Content-Type": "application/json",
@@ -126,7 +126,7 @@ async function getData2(): Promise<Members[]> {
 async function getData3(): Promise<Members[]> {
   // Fetch data from your API here.
   try {
-      const response = await fetch("http://localhost:3000/api/members",{
+      const response = await fetch("/api/members",{
           method: "POST",
           headers: {
               "Content-Type": "application/json",
@@ -174,7 +174,7 @@ async function getData3(): Promise<Members[]> {
 async function getData4(): Promise<Members[]> {
   // Fetch data from your API here.
   try {
-      const response = await fetch("http://localhost:3000/api/request");
+      const response = await fetch("/api/request");
 
       if (!response.ok) {
           throw new Error('Failed to fetch data');
@@ -214,7 +214,7 @@ async function getData4(): Promise<Members[]> {
 async function getData5(): Promise<Reservations[]> {
   // Fetch data from your API here.
   try {
-      const response = await fetch("http://localhost:3000/api/reservations",{
+      const response = await fetch("/api/reservations",{
           method: "POST",
           headers: {
               "Content-Type": "application/json",
