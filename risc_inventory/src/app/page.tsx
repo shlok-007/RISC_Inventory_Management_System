@@ -53,7 +53,7 @@ export default function Home() {
         RISC Inventory
        </h1>
       {/*<TypewriterEffectSmooth words={words1} /> */}
-      <TypewriterEffectSmooth words={words2} />
+      <TypewriterEffectSmooth className="z-50" words={words2} />
       {/* <p className="text-center mt-2 text-neutral-300 relative z-20">
         RISC's Inventory Management System
       </p> */}
