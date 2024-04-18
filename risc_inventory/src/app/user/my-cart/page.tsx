@@ -36,10 +36,14 @@ export default function ViewItems() {
     }, []);
     console.log(items);
   return (
+    <div>
+      <h1 className="text-4xl font-semibold text-center mb-20">
+        My Cart
+      </h1>
       <Card>
         <CardContent>
         <Table className="mt-4">
-          <TableCaption>A list of your recent invoices.</TableCaption>
+          <TableCaption>A list of your recent reservations.</TableCaption>
           <TableHeader>
             <TableRow>
               <TableHead className="w-[200px]">Item Name</TableHead>
@@ -67,5 +71,6 @@ export default function ViewItems() {
         </Table>
         </CardContent>
         </Card>
+      </div>
     );
   };
