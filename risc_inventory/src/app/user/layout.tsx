@@ -7,6 +7,7 @@ import {
   UserRound as Profile,
   Bot as ItemsIcon
  } from "lucide-react";
+import Link from "next/link";
 
 export default function UserLayout({
   children,
@@ -31,18 +32,24 @@ export default function UserLayout({
       {/*absolute navbar which contains items, cart and profile icon with labels all right aligned horizontally*/}
       <div className="fixed top-0 right-0 p-5 pr-8 flex items-center justify-end w-full z-40 backdrop-blur-lg bg-black/60">
         <div className="flex items-center gap-4">
-          <div className="flex items-center gap-2">
+          <Link 
+          href={"/user/view-items"} 
+          className="flex items-center gap-2 cursor-pointer">
             <ItemsIcon size={24} />
             <Label>Items</Label>
-          </div>
-          <div className="flex items-center gap-2">
+          </Link>
+          <Link 
+          href={"/user/my-cart"}
+          className="flex items-center gap-2 cursor-pointer">
             <CartIcon size={24} />
             <Label>Cart</Label>
-          </div>
-          <div className="flex items-center gap-2">
+          </Link>
+          <Link 
+          href={"/user/profile"}
+          className="flex items-center gap-2 cursor-pointer">
             <Profile size={24} />
             <Label>Profile</Label>
-          </div>
+          </Link>
         </div>
       </div>
 
