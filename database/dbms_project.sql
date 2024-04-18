@@ -1787,3 +1787,11 @@ INSERT INTO adminreq  VALUES (7,62, 'N');
 INSERT INTO adminreq  VALUES (8,71, 'N');
 INSERT INTO adminreq  VALUES (9,80, 'N');
 INSERT INTO adminreq  VALUES (10,89, 'N');
+
+SELECT * FROM ItemDetailView where ItemID <= 18;
+select * from reservations;
+
+CREATE OR REPLACE VIEW REQUEST AS
+select MEMBERID, FIRSTNAME, LASTNAME, EMAIL from adminreq natural join members where accepted='N';
+
+SELECT * FROM REQUEST;

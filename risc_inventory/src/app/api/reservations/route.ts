@@ -14,11 +14,11 @@ export async function POST(req: Request) {
         connection = await oracledb.getConnection(dbConfig);
         // console.log(connection);
         if(memberId === "All"){
-            Query = `SELECT ITEMNAME, STATUS, RESERVATIONDATE, RETURNDATE, PURPOSE, FIRSTNAME, LASTNAME FROM RESERVATIONS`;
+            Query = `SELECT ITEMNAME, STATUS, RESERVATIONDATE, RETURNDATE, PURPOSE, FIRSTNAME, LASTNAME,  RESERVATIONID, MEMBERID FROM RESERVATIONS WHERE STATUS <> 'accepted'`;
             result = await connection.execute(Query);
         }
         else{
-            Query = `SELECT ITEMNAME, STATUS, RESERVATIONDATE, RETURNDATE, PURPOSE, FIRSTNAME, LASTNAME FROM RESERVATIONS where memberid = :memberId`;
+            Query = `SELECT ITEMNAME, STATUS, RESERVATIONDATE, RETURNDATE, PURPOSE, FIRSTNAME, LASTNAME, RESERVATIONID, MEMBERID FROM RESERVATIONS where memberid = :memberId`;
             result = await connection.execute(Query, {
                 memberId: memberId
             });
@@ -35,6 +35,8 @@ export async function POST(req: Request) {
                     ReturnDate: data[3],
                     Purpose: data[4],
                     Name: data[5] + " " + data[6],
+                    ReservationId: data[7],
+                    MemberId: data[8]
                 }))
             });
         } else {
