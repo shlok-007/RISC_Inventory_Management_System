@@ -170,18 +170,19 @@ export default async function TabsDemo() {
       value: "Governors",
       content: (
         <div className="w-full overflow-hidden relative h-full rounded-2xl p-3 text-xl md:text-4xl font-bold text-white bg-gradient-to-br from-purple-700 to-violet-900">
-        <div className="container mx-auto py-2">
-          <div className="text-center text-4xl font-bold text-black">Existing governors</div>
-          <DataTable3 columns={columns3} data={data3} />
+          <div className="container mx-auto py-2 overflow-y-auto">
+            <div className="text-center text-4xl font-bold text-black">Existing governors</div>
+            <DataTable3 columns={columns3} data={data3} />
+          </div>
+    
+          <div className="container mx-auto py-2 overflow-y-auto">
+            <div className="text-center text-4xl font-bold text-black">Requesting governors</div>
+            <DataTable4 columns={columns4} data={data4} />
+          </div>
         </div>
-
-        <div className="container mx-auto py-2">
-          <div className="text-center text-4xl font-bold text-black">Requesting governors</div>
-          <DataTable4 columns={columns4} data={data4} />
-        </div>
-      </div>
       ),
     },
+    
     {
       title: "Reservation",
       value: "Reservation",
