@@ -26,6 +26,7 @@ export default function ViewItems() {
           quantity: item[5],
           category: item[6],
           image: item[4],
+          
         };
       });
       setItems(formattedData);

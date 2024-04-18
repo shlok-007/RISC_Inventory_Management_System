@@ -8,13 +8,21 @@ export async function POST(req: Request) {
     // console.log(dbConfig);
     const { memberId } = await req.json();
     // console.log(memberId);
+    let Query;
+    let result;
     try{
         connection = await oracledb.getConnection(dbConfig);
         // console.log(connection);
-        const Query = `SELECT ITEMNAME, STATUS, RESERVATIONDATE, RETURNDATE FROM RESERVATIONS where memberid = :memberId`;
-        const result = await connection.execute(Query, {
-            memberId: memberId
-        });
+        if(memberId === "All"){
+            Query = `SELECT ITEMNAME, STATUS, RESERVATIONDATE, RETURNDATE, PURPOSE, FIRSTNAME, LASTNAME FROM RESERVATIONS`;
+            result = await connection.execute(Query);
+        }
+        else{
+            Query = `SELECT ITEMNAME, STATUS, RESERVATIONDATE, RETURNDATE, PURPOSE, FIRSTNAME, LASTNAME FROM RESERVATIONS where memberid = :memberId`;
+            result = await connection.execute(Query, {
+                memberId: memberId
+            });
+        }
         // console.log(result);
  
         if((result.rows as any[]).length > 0){
@@ -25,6 +33,8 @@ export async function POST(req: Request) {
                     Status: data[1],
                     ReservationDate: data[2],
                     ReturnDate: data[3],
+                    Purpose: data[4],
+                    Name: data[5] + " " + data[6],
                 }))
             });
         } else {
